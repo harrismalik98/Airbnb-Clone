@@ -1,0 +1,10 @@
+# Ignore Node.js server dependencies
+/server/node_modules/
+
+# Ignore React client dependencies
+/client/node_modules/
+
+# Ignore environment files
+/server/.env
+/client/.env
+
