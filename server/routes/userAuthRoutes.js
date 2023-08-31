@@ -4,13 +4,16 @@ const router = express.Router();
 const controller = require("../controller/userAuthController");
 
 //========================= Register User ===================//
-router.post("/register", controller.registerUser);
+router.post("/register", controller.register);
 
 //========================= Login User ===================//
-router.post("/login", controller.loginUser);
+router.post("/login", controller.login);
 
 //========================= User Profile ===================//
-router.get("/profile", controller.userProfile);
+router.post("/logout", controller.logout);
+
+//========================= User Profile ===================//
+router.get("/profile", controller.profile);
 
 
 module.exports = router;

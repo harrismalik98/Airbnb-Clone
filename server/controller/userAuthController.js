@@ -9,7 +9,7 @@ const {User} = require("../models/userAuthModel");
 
 
 // ============================ REGISTER USER METHOD ============================ //
-const registerUser = async(req, res) => {
+const register = async(req, res) => {
     try{
         const {name, email, password} = req.body;
 
@@ -35,7 +35,7 @@ const registerUser = async(req, res) => {
 
 
 // ============================ LOGIN USER METHOD ============================ //
-const loginUser = async(req, res) => {
+const login = async(req, res) => {
 
     try{
         const {email, password} = req.body
@@ -76,8 +76,26 @@ const loginUser = async(req, res) => {
 
 
 
+
+// ============================ LOGIN USER METHOD ============================ //
+const logout = async(req, res) => {
+    try
+    {
+        res.cookie("token", "").json("true");
+    }
+    catch(error)
+    {
+        console.log(error);
+    }
+    
+}
+
+
+
+
+
 // ============================ PROFILE METHOD ============================ //
-const userProfile = async(req, res) => {
+const profile = async(req, res) => {
 
     try
     {
@@ -101,4 +119,4 @@ const userProfile = async(req, res) => {
 }
 
 
-module.exports = {registerUser,loginUser, userProfile};
+module.exports = {register,login, profile, logout};
