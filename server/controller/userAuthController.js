@@ -8,6 +8,7 @@ const jwtSecret = process.env.JWT_SECRET;
 const {User} = require("../models/userAuthModel");
 
 
+
 // ============================ REGISTER USER METHOD ============================ //
 const register = async(req, res) => {
     try{
@@ -30,6 +31,7 @@ const register = async(req, res) => {
         // console.log(error);
     }
 }
+
 
 
 
@@ -117,6 +119,7 @@ const profile = async(req, res) => {
     }
 
 }
+
 
 
 module.exports = {register,login, profile, logout};
