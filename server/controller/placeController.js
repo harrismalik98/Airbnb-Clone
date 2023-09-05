@@ -1,5 +1,6 @@
 const express = require("express");
 const imageDownloader = require('image-downloader');
+const fs = require("fs");
 const app = express();
 const path = require("path");
 
@@ -35,4 +36,37 @@ const uploadByLink = async(req, res) => {
 
 
 
-module.exports = {uploadByLink};
+
+
+// ============================ UPLOAD PHOTO ============================ //
+const uploadPhoto = async(req, res) => {
+    try
+    {
+        const uploadedFiles = [];
+        console.log(req.files);
+        for(let i=0; i<req.files.length; i++)
+        {
+            const {path, originalname} = req.files[i];
+
+            const extension = originalname.split(".");
+            const ext = extension[extension.length-1];
+
+            const newPath = path + "." + ext;
+            fs.renameSync(path, newPath);
+
+            uploadedFiles.push(newPath.replace("uploads\\", ""));
+        }
+
+        res.status(200).json(uploadedFiles);
+
+    }
+    catch(error)
+    {
+        console.error(error);
+        res.status(500).json({ error: 'An error occurred during file upload' });
+    }
+};
+
+
+
+module.exports = {uploadByLink, uploadPhoto};

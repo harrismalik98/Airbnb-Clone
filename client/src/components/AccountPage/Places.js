@@ -42,7 +42,7 @@ const Places = () => {
     const updateStateArray = (stateName, stateValue) => {
         setState((prevState) => ({
             ...prevState,
-            [stateName]: [...prevState[stateName] ,stateValue]
+            [stateName]: [...prevState[stateName] , ...stateValue]
         }));
     }
 
@@ -53,6 +53,33 @@ const Places = () => {
         updateStateArray("addedPhotos",filename);
 
         updateStateString("photoLink","");
+    }
+
+    const uploadPhoto = (event) => {
+
+        const files = event.target.files;
+        const data = new FormData();
+
+        for(let i=0; i<files.length; i++)
+        {
+            data.append("photos", files[i]);
+        }
+
+        try
+        {
+            axios.post("/uploadPhoto", data, {
+                headers:{"Content-type": "multipart/form-data"}
+            })
+            .then(response => 
+            {
+                const {data:filenames} = response;
+                updateStateArray("addedPhotos",filenames);
+            });
+        }
+        catch(error)
+        {
+            console.log(error);
+        }
     }
 
 
@@ -81,21 +108,25 @@ const Places = () => {
                         <button className="bg-gray-200 px-4 rounded-2xl" onClick={addPhotoByLink}>Add&nbsp;photo</button>
                     </div>
                     <div className="mt-2 grid gap-2 grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
-                        {state.addedPhotos.length > 0 && state.addedPhotos.map(link => {
+                        {state.addedPhotos.length > 0 && state.addedPhotos.map((link, index) => {
                             return(
-                                <div key={link} >
-                                    <img className="rounded-2xl" src={`http://localhost:5000/uploads/${link}`} alt=""/>
+                                <div className="h-32 flex" key={index} >
+                                    <img className="rounded-2xl w-full object-cover position-center" src={`http://localhost:5000/uploads/${link}`} alt=""/>
                                 </div>
                             );
                         })}
-                        <button className="flex gap-1 items-center justify-center border bg-transparent rounded-2xl p-8 text-2xl text-gray-600"><FontAwesomeIcon icon={faArrowUpFromBracket} />Upload</button>
+                        <label className="h-32 cursor-pointer flex gap-1 items-center justify-center border bg-transparent rounded-2xl p-8 text-2xl text-gray-600">
+                            <input type="file" multiple className="hidden" onChange={uploadPhoto}/>
+                            <FontAwesomeIcon icon={faArrowUpFromBracket} />
+                            Upload
+                        </label>
                     </div>
 
                     {preInput("Description", "Description of the place")}
                     <textarea  value={state.description} onChange={ev => updateStateString("desciption", ev.target.value)}/>
 
                     {preInput("Perks", "Select the perks of your place")}
-                    <Perks selected={state.perks} onChange={updateStateArray}/>
+                    <Perks selected={state.perks} onChange={setState}/>
 
                     {preInput("Extra Info", "House rules, etc")}
                     <textarea  value={state.extraInfo} onChange={ev => updateStateString("extraInfo", ev.target.value)}/>
