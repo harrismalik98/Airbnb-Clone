@@ -5,7 +5,7 @@ const Perks = ({selected, onChange}) => {
 
     const cbHandler = (event) => {
         const {checked, name} = event.target;
-        console.log(checked, name);
+        // console.log(checked, name);
 
         if(checked)
         {

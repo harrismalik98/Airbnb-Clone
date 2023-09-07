@@ -12,7 +12,7 @@ const photosMiddleware = multer({dest:"uploads"});
 
 router.post("/uploadPhoto", photosMiddleware.array("photos", 100) ,controller.uploadPhoto);
 
-//========================= Add Places ===================//
-// router.post("/addPlaces", controller.);
+//========================= Add New Place ===================//
+router.post("/addNewPlace", controller.addNewPlace);
 
 module.exports = router;

@@ -4,6 +4,9 @@ const fs = require("fs");
 const app = express();
 const path = require("path");
 
+const jwt = require("jsonwebtoken");
+const jwtSecret = process.env.JWT_SECRET;
+
 const {PlaceModel} = require("../models/placeModel");
 
 
@@ -69,4 +72,34 @@ const uploadPhoto = async(req, res) => {
 
 
 
-module.exports = {uploadByLink, uploadPhoto};
+
+
+// ============================ ADD NEW PLACE ============================ //
+const addNewPlace = async(req, res) => {
+    try
+    {
+        const {title, address, addedPhotos, description, perks, extraInfo, checkIn, checkOut, maxGuests} = req.body;
+        const {token} = req.cookies;
+        const userData = jwt.verify(token, jwtSecret);
+
+        // console.log(userData);
+
+        const placeDoc = await PlaceModel.create({
+            owner: userData.id,
+            title, address, addedPhotos, 
+            description, perks, extraInfo, 
+            checkIn, checkOut, maxGuests
+        })
+
+        res.status(201).json(placeDoc);
+
+    }
+    catch(error)
+    {
+        console.error(error);
+        res.status(500).json({ error: 'An error occurred during file upload' });
+    }
+}
+
+
+module.exports = {uploadByLink, uploadPhoto, addNewPlace};
