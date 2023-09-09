@@ -9,7 +9,7 @@ const Header = () => {
     const {user} = useContext(UserContext);
 
     return(
-        <header className="flex justify-between">
+        <header className="flex items-center justify-between">
             <Link to="/" className='flex items-center gap-1'>
             <FontAwesomeIcon icon={faAirbnb} style={{ color: "#ff5a60" }}  size="2x"/>
             <span className="font-bold text-xl">Airbnb</span>
@@ -21,7 +21,7 @@ const Header = () => {
             <div>Any week</div>
             <div className='border border-l border-gray-300'></div>
             <div>Add guests</div>
-            <button className='bg-primary text-white p-1 rounded-full'><FontAwesomeIcon icon={faSearch} size="xs"/></button>
+            <button className='flex items-center justify-center bg-primary w-7 h-7 text-white p-1 rounded-full'><FontAwesomeIcon icon={faSearch} size="xs"/></button>
             </div>
 
             <div className='flex items-center border border-gray-300 rounded-full py-2 px-4 gap-4'>

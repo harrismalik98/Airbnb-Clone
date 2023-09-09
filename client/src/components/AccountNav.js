@@ -4,7 +4,7 @@ import { faUser, faList, faBuilding } from '@fortawesome/free-solid-svg-icons';
 
 const AccountNav = () => {
     const {pathname} = useLocation();
-    console.log(pathname);
+    // console.log(pathname);
     let subpage = pathname.split("/")?.[2];
 
     if(subpage === undefined)

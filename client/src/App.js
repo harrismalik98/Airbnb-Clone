@@ -26,6 +26,7 @@ function App() {
           <Route path="/account"            element={<Profile />} />
           <Route path="/account/places"     element={<Places/>} />
           <Route path="/account/places/new" element={<AddPlacesForm/>} />
+          <Route path="/account/places/:id" element={<AddPlacesForm/>} />
 
         </Route>
 

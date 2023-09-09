@@ -1,5 +1,5 @@
-import { useContext, useState } from "react";
-import { useNavigate, Navigate } from "react-router-dom";
+import { useContext, useEffect, useState } from "react";
+import { useNavigate, Navigate, useParams } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowUpFromBracket } from '@fortawesome/free-solid-svg-icons';
 import axios from "axios";
@@ -9,21 +9,78 @@ import { UserContext } from "../context/UserContext";
 
 const AddPlacesForm = () => {
 
-    const navigate = useNavigate();
+    const {id} = useParams();
     const {user} = useContext(UserContext);
-    const [state, setState] = useState({
-        title:"",
-        address:"",
-        photoLink:"",
-        addedPhotos:[],
-        description:"",
-        perks:[],
-        extraInfo:"",
-        checkIn:"",
-        checkOut:"",
-        maxGuests:1
-    });
+    const navigate = useNavigate();
 
+    const initialState = {
+        title: "",
+        address: "",
+        photoLink: "",
+        addedPhotos: [],
+        description: "",
+        perks: [],
+        extraInfo: "",
+        checkIn: "",
+        checkOut: "",
+        maxGuests: 1
+      };
+    const [state, setState] = useState(initialState);
+
+
+
+    const updateStateString = (stateName, stateValue) => {
+        setState((prevState) => ({
+            ...prevState,
+            [stateName]: stateValue
+        }));
+
+        // console.log(stateName, stateValue);
+    }
+
+
+
+    const updateStateArray = (stateName, stateValue, shouldSpread = true, edit = false) => {
+        if(edit === false)
+        {
+            setState((prevState) => ({
+                ...prevState,
+                [stateName]: shouldSpread
+                  ? [...prevState[stateName], ...stateValue]     // For adding multiple photos at once
+                  : [...prevState[stateName], stateValue]       // For adding photos by link
+              }));
+        }
+        else
+        {
+            setState((prevState) => ({
+                ...prevState,
+                [stateName]:stateValue
+            }))
+        }
+        
+      };
+
+
+
+    useEffect(()=>{
+        if(id)
+        {
+            axios.get("/places/"+id)
+            .then(response => {
+                const {data} = response;
+
+                updateStateString("title", data.title);
+                updateStateString("address", data.address);
+                updateStateArray("addedPhotos", data.photos, false, true);
+                updateStateString("description", data.description);
+                updateStateArray("perks", data.perks, true, true);
+                updateStateString("extraInfo", data.extraInfo);
+                updateStateString("checkIn", data.checkIn);
+                updateStateString("checkOut", data.checkOut);
+                updateStateString("maxGuests", data.maxGuests);
+            });   
+        }
+    },[id])
 
     if(!user)
     {
@@ -40,28 +97,6 @@ const AddPlacesForm = () => {
             </>
         );
     }
-
-
-
-    const updateStateString = (stateName, stateValue) => {
-        setState((prevState) => ({
-            ...prevState,
-            [stateName]: stateValue
-        }));
-
-        // console.log(stateName, stateValue);
-    }
-
-
-
-    const updateStateArray = (stateName, stateValue, shouldSpread = true) => {
-        setState((prevState) => ({
-          ...prevState,
-          [stateName]: shouldSpread
-            ? [...prevState[stateName], ...stateValue]
-            : [...prevState[stateName], stateValue],
-        }));
-      };
 
 
 
@@ -105,10 +140,10 @@ const AddPlacesForm = () => {
 
 
 
-    const addNewPlace = async(event) => {
+    const savePlace = async(event) => {
         event.preventDefault();
 
-        const newPlaceData = {
+        const placeData = {
             title:       state.title, 
             address:     state.address, 
             photoLink:   state.photoLink,
@@ -121,11 +156,20 @@ const AddPlacesForm = () => {
             maxGuests:   state.maxGuests
         }
 
-        await axios.post("/addNewPlace", newPlaceData);
+        if(!id)
+        {
+            // Adding New Place
+            await axios.post("/addNewPlace", placeData);
+        }
+        else
+        {
+            // Editing Existing Place
+            await axios.put("/editPlace", {id, ...placeData});
+        }
 
+        setState(initialState);
         
         navigate("/account/places");
-        // <Navigate to="/account/places"/>;
     }
 
 
@@ -133,7 +177,7 @@ const AddPlacesForm = () => {
     return(
         <>
             <AccountNav/>
-            <form className="w-4/5 mx-auto" onSubmit={addNewPlace}>
+            <form className="w-4/5 mx-auto" onSubmit={savePlace}>
                 {preInput("Title", "Title for your place, should be short and catchy as in advertisement")}
                 <input type="text" placeholder="title, for example: My lovely apartment" value={state.title} onChange={ev => updateStateString("title", ev.target.value)}/>
 

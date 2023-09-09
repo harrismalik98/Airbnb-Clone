@@ -86,7 +86,7 @@ const addNewPlace = async(req, res) => {
 
         const placeDoc = await PlaceModel.create({
             owner: userData.id,
-            title, address, addedPhotos, 
+            title, address, photos:addedPhotos, 
             description, perks, extraInfo, 
             checkIn, checkOut, maxGuests
         })
@@ -97,9 +97,86 @@ const addNewPlace = async(req, res) => {
     catch(error)
     {
         console.error(error);
-        res.status(500).json({ error: 'An error occurred during file upload' });
+        res.status(500).json({ error: 'An error occurred while saving place' });
     }
 }
 
 
-module.exports = {uploadByLink, uploadPhoto, addNewPlace};
+
+
+
+// ============================ GET ALL PLACES ============================ //
+const getAllPlaces = async(req, res) => {
+    try
+    {
+        const {token} = req.cookies;
+        const {id} = jwt.verify(token, jwtSecret);
+        
+        const data = await PlaceModel.find({owner: id});
+        res.status(200).json(data);
+    }
+    catch(error)
+    {
+        console.error(error);
+        res.status(500).json({ error: 'An error occurred while getting all places' });
+    }
+}
+
+
+
+
+
+// ============================ GETTING EDIT DATA PLACE ============================ //
+const getEditDataPlace = async(req, res) => {
+    try
+    {
+        const {id} = req.params;
+        const data = await PlaceModel.findById({_id:id});
+        res.json(data);
+
+    }
+    catch(error)
+    {
+        console.error(error);
+        res.status(500).json({ error: 'An error occurred while editing place' })
+    }
+}
+
+
+
+
+
+// ============================ EDIT EXISTING PLACE ============================ //
+const eidtPlace = async(req, res) => {
+    try
+    {
+        const {id, title, address, addedPhotos, description, perks, extraInfo, checkIn, checkOut, maxGuests} = req.body;
+        const {token} = req.cookies;
+        const userData = jwt.verify(token, jwtSecret);
+        // console.log(userData);
+
+        const placeDoc = await PlaceModel.findById(id);
+
+        if(userData.id === placeDoc.owner.toString())
+        {
+            await placeDoc.set({
+                title, address, photos:addedPhotos, 
+                description, perks, extraInfo, 
+                checkIn, checkOut, maxGuests
+            });
+
+            await placeDoc.save();
+        }
+
+        res.status(202).json("ok");
+    }
+    catch(error)
+    {
+        console.error(error);
+        res.status(500).json({ error: 'An error occurred while editing place' })
+    }
+}
+
+
+
+module.exports = {uploadByLink, uploadPhoto, addNewPlace, getAllPlaces, getEditDataPlace, eidtPlace};

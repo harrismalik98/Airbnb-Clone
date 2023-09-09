@@ -26,27 +26,27 @@ const Perks = ({selected, onChange}) => {
     return(
         <div className="grid mt-2 gap-2 grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
             <label className="border p-4 flex gap-2 items-center rounded-2xl cursor-pointer">
-                <input type="checkbox" name='wifi' onClick={cbHandler} />
+                <input type="checkbox" checked={selected.includes('wifi')} name='wifi' onChange={cbHandler} />
                 <span><FontAwesomeIcon icon={faWifi} /> Wifi</span>
             </label>
             <label className="border p-4 flex gap-2 items-center rounded-2xl cursor-pointer">
-                <input type="checkbox" name='free parking' onClick={cbHandler} />
+                <input type="checkbox" checked={selected.includes('free parking')} name='free parking' onChange={cbHandler} />
                 <span><FontAwesomeIcon icon={faCarSide} /> Free parking on premises</span>
             </label>
             <label className="border p-4 flex gap-2 items-center rounded-2xl cursor-pointer">
-                <input type="checkbox" name='tv' onClick={cbHandler} />
+                <input type="checkbox" checked={selected.includes('tv')} name='tv' onChange={cbHandler} />
                 <span><FontAwesomeIcon icon={faTv} /> TV</span>
             </label>
             <label className="border p-4 flex gap-2 items-center rounded-2xl cursor-pointer">
-                <input type="checkbox" name="pets" onClick={cbHandler} />
+                <input type="checkbox" checked={selected.includes("pets")} name="pets" onChange={cbHandler} />
                 <span><FontAwesomeIcon icon={faPaw} /> Pets allowed</span>
             </label>
             <label className="border p-4 flex gap-2 items-center rounded-2xl cursor-pointer">
-                <input type="checkbox" name='kitchen' onClick={cbHandler} />
+                <input type="checkbox" checked={selected.includes('kitchen')} name='kitchen' onChange={cbHandler} />
                 <span><FontAwesomeIcon icon={faKitchenSet} /> Kitchen</span>
             </label>
             <label className="border p-4 flex gap-2 items-center rounded-2xl cursor-pointer">
-                <input type="checkbox" name='private entrance' onClick={cbHandler} />
+                <input type="checkbox" checked={selected.includes('private entrance')} name='private entrance' onChange={cbHandler} />
                 <span><FontAwesomeIcon icon={faDoorOpen} /> Private Entrance</span>
             </label>
         </div>
