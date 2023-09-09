@@ -1,7 +1,8 @@
 import { useContext, useEffect, useState } from "react";
 import { useNavigate, Navigate, useParams } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowUpFromBracket } from '@fortawesome/free-solid-svg-icons';
+import { faArrowUpFromBracket, faTrashCan, faStar as solidStar } from '@fortawesome/free-solid-svg-icons';
+import { faStar as outlinedStar } from '@fortawesome/free-regular-svg-icons';
 import axios from "axios";
 import Perks from "../components/AddPlacesFormPage/Perks";
 import AccountNav from "../components/AccountNav";
@@ -140,6 +141,23 @@ const AddPlacesForm = () => {
 
 
 
+    const removePhoto = async(link) => {
+        setState(prevState => ({
+            ...prevState,
+            addedPhotos: prevState.addedPhotos.filter(addedPhoto => addedPhoto !== link)
+        }));
+    }
+    
+
+
+    const selectedAsMainPhoto = async(link) => {    
+        setState(prevState => ({
+            ...prevState,
+            addedPhotos: [link, ...prevState.addedPhotos.filter(addedPhoto => addedPhoto !== link)]
+        }));
+    }
+
+
     const savePlace = async(event) => {
         event.preventDefault();
 
@@ -192,8 +210,15 @@ const AddPlacesForm = () => {
                 <div className="mt-2 grid gap-2 grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
                     {state.addedPhotos.length > 0 && state.addedPhotos.map((link, index) => {
                         return(
-                            <div className="h-32 flex" key={index} >
+                            <div className="h-32 flex relative" key={index} >
                                 <img className="rounded-2xl w-full object-cover position-center" src={`http://localhost:5000/uploads/${link}`} alt=""/>
+                                <FontAwesomeIcon className="absolute bottom-1 right-1 text-white cursor-pointer bg-black bg-opacity-50 rounded-xl p-2" onClick={() => removePhoto(link)} icon={faTrashCan} />
+                                {
+                                    link === state.addedPhotos[0] 
+                                    ? <FontAwesomeIcon className="absolute bottom-1 left-1 fill-none text-white cursor-pointer bg-black bg-opacity-50 rounded-xl p-2" onClick={() => selectedAsMainPhoto(link)} icon={solidStar} />
+                                    : <FontAwesomeIcon className="absolute bottom-1 left-1 fill-none text-white cursor-pointer bg-black bg-opacity-50 rounded-xl p-2" onClick={() => selectedAsMainPhoto(link)} icon={outlinedStar} />
+                                }
+                                      
                             </div>
                         );
                     })}
