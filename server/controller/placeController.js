@@ -78,7 +78,7 @@ const uploadPhoto = async(req, res) => {
 const addNewPlace = async(req, res) => {
     try
     {
-        const {title, address, addedPhotos, description, perks, extraInfo, checkIn, checkOut, maxGuests} = req.body;
+        const {title, address, addedPhotos, description, perks, extraInfo, checkIn, checkOut, maxGuests, price} = req.body;
         const {token} = req.cookies;
         const userData = jwt.verify(token, jwtSecret);
 
@@ -88,7 +88,7 @@ const addNewPlace = async(req, res) => {
             owner: userData.id,
             title, address, photos:addedPhotos, 
             description, perks, extraInfo, 
-            checkIn, checkOut, maxGuests
+            checkIn, checkOut, maxGuests, price
         })
 
         res.status(201).json(placeDoc);
@@ -105,8 +105,8 @@ const addNewPlace = async(req, res) => {
 
 
 
-// ============================ GET ALL PLACES ============================ //
-const getAllPlaces = async(req, res) => {
+// ============================ GET ALL USER PLACES ============================ //
+const getUserPlaces = async(req, res) => {
     try
     {
         const {token} = req.cookies;
@@ -150,7 +150,7 @@ const getEditDataPlace = async(req, res) => {
 const eidtPlace = async(req, res) => {
     try
     {
-        const {id, title, address, addedPhotos, description, perks, extraInfo, checkIn, checkOut, maxGuests} = req.body;
+        const {id, title, address, addedPhotos, description, perks, extraInfo, checkIn, checkOut, maxGuests, price} = req.body;
         const {token} = req.cookies;
         const userData = jwt.verify(token, jwtSecret);
         // console.log(userData);
@@ -162,7 +162,7 @@ const eidtPlace = async(req, res) => {
             await placeDoc.set({
                 title, address, photos:addedPhotos, 
                 description, perks, extraInfo, 
-                checkIn, checkOut, maxGuests
+                checkIn, checkOut, maxGuests, price
             });
 
             await placeDoc.save();
@@ -179,4 +179,21 @@ const eidtPlace = async(req, res) => {
 
 
 
-module.exports = {uploadByLink, uploadPhoto, addNewPlace, getAllPlaces, getEditDataPlace, eidtPlace};
+
+
+// ============================ GET ALL USER PLACES ============================ //
+const getAllPlaces = async(req, res) => {
+    try
+    {
+        const places = await PlaceModel.find();
+        res.status(200).json(places);
+    }
+    catch(error)
+    {
+        console.error(error);
+        res.status(500).json({ error: 'An error occurred while getting all places' })
+    }
+}
+
+
+module.exports = {uploadByLink, uploadPhoto, addNewPlace, getUserPlaces, getEditDataPlace, eidtPlace, getAllPlaces};

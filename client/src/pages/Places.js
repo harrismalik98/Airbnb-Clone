@@ -15,7 +15,7 @@ const Places = () => {
     useEffect(()=>{
 
         const getAllPlaces = async() => {
-            await axios.get("/getAllPlaces")
+            await axios.get("/getUserPlaces")
             .then(({data}) => {
                 setPlaces(data);
             });

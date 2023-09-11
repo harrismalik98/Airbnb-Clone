@@ -24,7 +24,8 @@ const AddPlacesForm = () => {
         extraInfo: "",
         checkIn: "",
         checkOut: "",
-        maxGuests: 1
+        maxGuests: 1,
+        price:100
       };
     const [state, setState] = useState(initialState);
 
@@ -79,6 +80,7 @@ const AddPlacesForm = () => {
                 updateStateString("checkIn", data.checkIn);
                 updateStateString("checkOut", data.checkOut);
                 updateStateString("maxGuests", data.maxGuests);
+                updateStateString("price", data.price);
             });   
         }
     },[id])
@@ -171,7 +173,8 @@ const AddPlacesForm = () => {
             extraInfo:   state.extraInfo, 
             checkIn:     state.checkIn, 
             checkOut:    state.checkOut, 
-            maxGuests:   state.maxGuests
+            maxGuests:   state.maxGuests,
+            price:       state.price
         }
 
         if(!id)
@@ -239,7 +242,7 @@ const AddPlacesForm = () => {
                 <textarea  value={state.extraInfo} onChange={ev => updateStateString("extraInfo", ev.target.value)}/>
 
                 {preInput("Check in&out Times", "Add check in and out times, remember to have some time window for cleaning the room between guests")}
-                <div className="grid gap-2 sm:grid-cols-3">
+                <div className="grid gap-2 grid-cols-2 md-grid-cols-4">
                     <div>
                         <h3 className="mt-2 -mb-1">Check in time</h3>
                         <input type="text" placeholder="8:00"  value={state.checkIn} onChange={ev => updateStateString("checkIn", ev.target.value)}/>
@@ -251,6 +254,10 @@ const AddPlacesForm = () => {
                     <div>
                         <h3 className="mt-2 -mb-1">Max number of guests</h3>
                         <input type="number" value={state.maxGuests} onChange={ev => updateStateString("maxGuests", ev.target.value)}/>
+                    </div>
+                    <div>
+                        <h3 className="mt-2 -mb-1">Price per night($)</h3>
+                        <input type="number" value={state.price} onChange={ev => updateStateString("price", ev.target.value)}/>
                     </div>
                 </div>
 

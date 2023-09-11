@@ -15,11 +15,14 @@ router.post("/uploadPhoto", photosMiddleware.array("photos", 100) ,controller.up
 //========================= Add New Place ===================//
 router.post("/addNewPlace", controller.addNewPlace);
 
-//========================= Get All Places ===================//
-router.get("/getAllPlaces", controller.getAllPlaces);
+//========================= Get All User Places ===================//
+router.get("/getUserPlaces", controller.getUserPlaces);
 
 //========================= Edit Place ===================//
 router.get("/places/:id", controller.getEditDataPlace);
 router.put("/editplace", controller.eidtPlace);
+
+//========================= Get All Places ===================//
+router.get("/getAllPlaces", controller.getAllPlaces);
 
 module.exports = router;
