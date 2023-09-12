@@ -18,8 +18,10 @@ router.post("/addNewPlace", controller.addNewPlace);
 //========================= Get All User Places ===================//
 router.get("/getUserPlaces", controller.getUserPlaces);
 
+//========================= Getting Place Data ===================//
+router.get("/places/:id", controller.getPlaceData);
+
 //========================= Edit Place ===================//
-router.get("/places/:id", controller.getEditDataPlace);
 router.put("/editplace", controller.eidtPlace);
 
 //========================= Get All Places ===================//

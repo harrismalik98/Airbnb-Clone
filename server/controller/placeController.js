@@ -126,8 +126,8 @@ const getUserPlaces = async(req, res) => {
 
 
 
-// ============================ GETTING EDIT DATA PLACE ============================ //
-const getEditDataPlace = async(req, res) => {
+// ============================ GETTING PLACE DATA ============================ //
+const getPlaceData = async(req, res) => {
     try
     {
         const {id} = req.params;
@@ -196,4 +196,4 @@ const getAllPlaces = async(req, res) => {
 }
 
 
-module.exports = {uploadByLink, uploadPhoto, addNewPlace, getUserPlaces, getEditDataPlace, eidtPlace, getAllPlaces};
+module.exports = {uploadByLink, uploadPhoto, addNewPlace, getUserPlaces, getPlaceData, eidtPlace, getAllPlaces};
