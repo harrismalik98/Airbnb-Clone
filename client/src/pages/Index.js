@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import Loading from "../components/Loading";
 
 const Index = () => {
     const [places, setPlaces] = useState([]);
@@ -11,9 +12,14 @@ const Index = () => {
             const {data} = response
             // console.log(data);
             setPlaces(data);
-            // setPlaces([...response.data, ...response.data, ...response.data]);
         });
     },[])
+
+
+    if(places.length === 0)
+    {
+        return <Loading/>
+    }
 
     return(
         <div className="mt-8 gap-x-6 gap-y-8 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
@@ -31,7 +37,6 @@ const Index = () => {
                     </p>
                 </Link>
             ))}
-            
             
         </div>
     );

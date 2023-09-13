@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
 
@@ -7,7 +7,14 @@ const Login = () => {
     const [email, setEmail]      = useState("");
     const [password, setPassword]  = useState("");
     const navigate = useNavigate();
-    const {setUser} = useContext(UserContext);
+    const {user, setUser} = useContext(UserContext);
+
+    useEffect(()=> {
+        if(user)
+        {
+            navigate("/account");
+        }
+    },[navigate, user])
 
 
     const loginUserHandler = async(event) => {

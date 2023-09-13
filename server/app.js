@@ -24,9 +24,12 @@ app.use(cors({
 
 const userAuthRoutes = require("./routes/userAuthRoutes");
 const placeRoutes = require("./routes/placeRoutes");
+const bookingRoutes = require("./routes/bookingRoutes");
 
 app.use("/", userAuthRoutes);
 app.use("/", placeRoutes);
+app.use("/",bookingRoutes);
+
 
 
 

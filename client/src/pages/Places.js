@@ -5,6 +5,9 @@ import AccountNav from "../components/AccountNav";
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../context/UserContext";
 import axios from "axios";
+import PlaceImg from "../components/PlaceImg";
+import Loading from "../components/Loading";
+import { faPenToSquare } from "@fortawesome/free-regular-svg-icons";
 
 const Places = () => {
 
@@ -32,6 +35,11 @@ const Places = () => {
         return <Navigate to="/login" />
     }
 
+    if(places.length === 0)
+    {
+        return <Loading/>
+    }
+
     return(
         <>
             <AccountNav />
@@ -45,18 +53,19 @@ const Places = () => {
 
             <section className="mt-4 ">
                 {places.length > 0 && ( places.map(place =>(
-                    <Link to={"/account/places/"+place._id} key={place._id} className="flex items-center gap-4 bg-gray-100 p-4 mt-6 rounded-2xl">
+                    <div key={place._id} className="flex items-center gap-4 bg-gray-100 p-4 mt-6 rounded-2xl">
                         <div className="flex w-32 h-32 bg-gray-300 grow shrink-0">
-                            {place.photos.length > 0 && (
-                                <img className="object-cover" src={"http://localhost:5000/uploads/"+place.photos[0]} alt={place.title}/> 
-                            )}
+                            <PlaceImg place={place} />
                         </div>
                         <div className="grow-0 shrink">
-                            <h2 className="text-xl">{place.title}</h2>
-                            <p className="text-sm mt-2">{place.description}</p>
+                            <div className="flex items-center justify-between mr-8">
+                                <h2 className="text-xl">{place.title}</h2>
+                                <Link to={"/account/places/"+place._id} className="bg-primary py-1 px-4 text-white rounded-2xl"><FontAwesomeIcon icon={faPenToSquare} /> Edit</Link>
+                            </div>
+                            <p className="text-sm mt-2 mr-8">{place.description}</p>
                         </div>
                         
-                    </Link>
+                    </div>
                 ))
                 )}
             </section>
