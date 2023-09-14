@@ -12,19 +12,22 @@ import { faPenToSquare } from "@fortawesome/free-regular-svg-icons";
 const Places = () => {
 
     const [places, setPlaces] = useState([]);
+    const [loading, setLoading] = useState(true);
     const {user} = useContext(UserContext);
     
 
     useEffect(()=>{
 
-        const getAllPlaces = async() => {
-            await axios.get("/getUserPlaces")
-            .then(({data}) => {
-                setPlaces(data);
-            });
-        }
-
-        getAllPlaces();
+        axios.get("/getUserPlaces")
+        .then(response => {
+            const {data} = response;
+            setPlaces(data);
+            setLoading(false);
+        })
+        .catch(error => {
+            console.error("Error fetching places:", error);
+            setLoading(false);
+        });
 
     }, []);
 
@@ -35,11 +38,8 @@ const Places = () => {
         return <Navigate to="/login" />
     }
 
-    if(places.length === 0)
-    {
-        return <Loading/>
-    }
 
+    
     return(
         <>
             <AccountNav />
@@ -51,24 +51,33 @@ const Places = () => {
                 </Link>
             </div>
 
-            <section className="mt-4 ">
-                {places.length > 0 && ( places.map(place =>(
-                    <div key={place._id} className="flex items-center gap-4 bg-gray-100 p-4 mt-6 rounded-2xl">
-                        <div className="flex w-32 h-32 bg-gray-300 grow shrink-0">
-                            <PlaceImg place={place} />
-                        </div>
-                        <div className="grow-0 shrink">
-                            <div className="flex items-center justify-between mr-8">
-                                <h2 className="text-xl">{place.title}</h2>
-                                <Link to={"/account/places/"+place._id} className="bg-primary py-1 px-4 text-white rounded-2xl"><FontAwesomeIcon icon={faPenToSquare} /> Edit</Link>
-                            </div>
-                            <p className="text-sm mt-2 mr-8">{place.description}</p>
-                        </div>
-                        
-                    </div>
-                ))
-                )}
-            </section>
+            {loading ? <Loading/> : (places.length === 0 ? (
+                    <Link to="/account/places/new" className="bg-gray-600 m-auto text-xl text-white px-6 py-3 rounded-full">
+                        Currently, you have no places in the system. To get started, kindly add a place.
+                    </Link> )
+                    : (
+                        <section className="mt-4 ">
+                            {places.length > 0 && ( places.map(place =>(
+                                <div key={place._id} className="flex items-center gap-4 bg-gray-100 p-4 mt-6 rounded-2xl">
+                                    <div className="flex w-32 h-32 bg-gray-300 grow shrink-0">
+                                        <PlaceImg place={place} />
+                                    </div>
+                                    <div className="grow-0 shrink">
+                                        <div className="flex items-center justify-between mr-8">
+                                            <h2 className="text-xl">{place.title}</h2>
+                                            <Link to={"/account/places/"+place._id} className="bg-primary py-1 px-4 text-white rounded-2xl"><FontAwesomeIcon icon={faPenToSquare} /> Edit</Link>
+                                        </div>
+                                        <p className="text-sm mt-2 mr-8">{place.description}</p>
+                                    </div>
+                                    
+                                </div>
+                            ))
+                            )}
+                        </section> 
+                    )
+                 )
+            }
+            
         </>
         
     );

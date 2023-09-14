@@ -200,10 +200,10 @@ const AddPlacesForm = () => {
             <AccountNav/>
             <form className="w-4/5 mx-auto" onSubmit={savePlace}>
                 {preInput("Title", "Title for your place, should be short and catchy as in advertisement")}
-                <input type="text" placeholder="title, for example: My lovely apartment" value={state.title} onChange={ev => updateStateString("title", ev.target.value)}/>
+                <input type="text" placeholder="title, for example: My lovely apartment" value={state.title} onChange={ev => updateStateString("title", ev.target.value)} required />
 
                 {preInput("Address", "Address to this place")}
-                <input type="text" placeholder="address"  value={state.address} onChange={ev => updateStateString("address", ev.target.value)}/>
+                <input type="text" placeholder="address"  value={state.address} onChange={ev => updateStateString("address", ev.target.value)} required />
 
                 {preInput("Photos", "More is better")}
                 <div className="flex gap-2">
@@ -233,23 +233,23 @@ const AddPlacesForm = () => {
                 </div>
 
                 {preInput("Description", "Description of the place")}
-                <textarea  value={state.description} onChange={ev => updateStateString("description", ev.target.value)}/>
+                <textarea  value={state.description} onChange={ev => updateStateString("description", ev.target.value)} required />
 
                 {preInput("Perks", "Select the perks of your place")}
                 <Perks selected={state.perks} onChange={setState}/>
 
                 {preInput("Extra Info", "House rules, etc")}
-                <textarea  value={state.extraInfo} onChange={ev => updateStateString("extraInfo", ev.target.value)}/>
+                <textarea  value={state.extraInfo} onChange={ev => updateStateString("extraInfo", ev.target.value)} />
 
                 {preInput("Check in&out Times", "Add check in and out times, remember to have some time window for cleaning the room between guests")}
                 <div className="grid gap-2 grid-cols-2 md-grid-cols-4">
                     <div>
                         <h3 className="mt-2 -mb-1">Check in time</h3>
-                        <input type="text" placeholder="8:00"  value={state.checkIn} onChange={ev => updateStateString("checkIn", ev.target.value)}/>
+                        <input type="text" placeholder="8:00"  value={state.checkIn} onChange={ev => updateStateString("checkIn", ev.target.value)} required />
                     </div>
                     <div>
                         <h3 className="mt-2 -mb-1">Check out time</h3>
-                        <input type="text" placeholder="18:00" value={state.checkOut} onChange={ev => updateStateString("checkOut", ev.target.value)}/>
+                        <input type="text" placeholder="18:00" value={state.checkOut} onChange={ev => updateStateString("checkOut", ev.target.value)} required />
                     </div>
                     <div>
                         <h3 className="mt-2 -mb-1">Max number of guests</h3>
@@ -257,11 +257,11 @@ const AddPlacesForm = () => {
                     </div>
                     <div>
                         <h3 className="mt-2 -mb-1">Price per night($)</h3>
-                        <input type="number" value={state.price} onChange={ev => updateStateString("price", ev.target.value)}/>
+                        <input type="number" value={state.price} onChange={ev => updateStateString("price", ev.target.value)} required />
                     </div>
                 </div>
 
-                <button className="primary my-4">Save</button>
+                <button className="primary my-4" type="submit">Save</button>
 
             </form>
         </>
