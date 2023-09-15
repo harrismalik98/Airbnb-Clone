@@ -14,21 +14,30 @@ const register = async(req, res) => {
     try{
         const {name, email, password} = req.body;
 
-        const hashedPassword = await bcrypt.hash(password, 10);
+        const emailFound = await User.find({email:email});
 
-        const newUser = await User.create({
-            name,
-            email,
-            password:hashedPassword
-        });
+        if(emailFound)
+        {
+            return res.status(409).json({error: "Email already in use. Please use a different email to register."});
+        }
+        else
+        {
+            const hashedPassword = await bcrypt.hash(password, 10);
 
-        // console.log(newUser);
-        res.status(201).json(newUser);
+            const newUser = await User.create({
+                name,
+                email,
+                password:hashedPassword
+            });
+
+            // console.log(newUser);
+            res.status(201).json(newUser);
+        }
 
     }
     catch(error){
-        res.status(422).json(error);
-        // console.log(error);
+        console.log(err);
+        return res.status(500).json({ error: "Internal Server Error" });
     }
 }
 
@@ -62,16 +71,17 @@ const login = async(req, res) => {
             }
             else
             {
-                return res.status(401).json("Not Allowed: Wrong Credentials");
+                return res.status(401).json({error: "Incorrect password. Please check your password and try again."});
             }
         }
         else
         {
-            return res.status(400).json("User not found");
+            return res.status(400).json({error:"Invalid email address. Please enter a valid email address."});
         }
     }
     catch(err){
         console.log(err);
+        return res.status(500).json({ error: "Internal Server Error" });
     }
 }
 

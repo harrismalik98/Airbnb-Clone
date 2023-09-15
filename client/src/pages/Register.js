@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useState } from "react";
+import toast from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
 
 const Register = () => {
@@ -21,12 +22,21 @@ const Register = () => {
             setEmail("");
             setPassword("");
     
+            toast.success("Registration successfull, Now you can log in");
+
             navigate("/login");
-            alert("Registration successfull, Now you can log in");
         }
         catch(error)
         {
-            alert("Registration failed, Please try again later");
+            if(error.response)
+            {
+                const errorMessage = error.response.data.error || "Registration Failed";
+                toast.error(errorMessage);
+            }
+            else
+            {
+                toast.error("Registration failed due to some error. Please try again!");
+            }
         }
     }
 

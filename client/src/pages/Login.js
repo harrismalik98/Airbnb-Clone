@@ -2,6 +2,7 @@ import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
+import toast from "react-hot-toast";
 
 const Login = () => {
     const [email, setEmail]      = useState("");
@@ -28,12 +29,20 @@ const Login = () => {
             setEmail("");
             setPassword("");
 
-            alert("Login Successfull");
+            toast.success("Login Successfull");
             navigate("/");
         }
         catch(error)
         {
-            alert("Login Failed");
+            if (error.response)
+            {
+                const errorMessage = error.response.data.error || "Login Failed";
+                toast.error(errorMessage);
+            }
+            else
+            {
+                toast.error("Login failed due to some error. Please try again!");
+            }
         }
     }
     
