@@ -191,9 +191,45 @@ const getAllPlaces = async(req, res) => {
     catch(error)
     {
         console.error(error);
-        res.status(500).json({ error: 'An error occurred while getting all places' })
+        res.status(500).json({ error: 'An error occurred while getting all places' });
     }
 }
 
 
-module.exports = {uploadByLink, uploadPhoto, addNewPlace, getUserPlaces, getPlaceData, eidtPlace, getAllPlaces};
+
+
+
+// ============================ GET ALL USER PLACES ============================ //
+const getSearchedPlace = async(req, res) => {
+    try
+    {
+        const {search} = req.query;
+
+        // Escape special regex characters in the search term
+        const escapedSearch = search.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&');
+        
+        // Create a regular expression with the 'i' modifier for case-insensitive search
+        const regex = new RegExp(`\\b${escapedSearch}\\b`, 'i');
+
+        const foundPlace = await PlaceModel.find({address: { $regex: regex } });
+
+        if(foundPlace.length > 0)
+        {
+            return res.status(200).json(foundPlace);
+        }
+        else
+        {
+            return res.status(404).json({ error: 'There is no place registered with this name. Kindly entered valid name' });
+        }
+
+        
+    }
+    catch(error)
+    {
+        console.error(error);
+        res.status(500).json({ error: 'Something went wrong while searching place' });
+    }
+
+}
+
+module.exports = {uploadByLink, uploadPhoto, addNewPlace, getUserPlaces, getPlaceData, eidtPlace, getAllPlaces, getSearchedPlace};

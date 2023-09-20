@@ -1,19 +1,57 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Loading from "../components/Loading";
+import { SearchContext } from "../context/SearchContext";
+import toast from "react-hot-toast";
 
 const Index = () => {
     const [places, setPlaces] = useState([]);
+
+    const {searchPlace} = useContext(SearchContext);
+
+    useEffect(() => {
+
+        const debounceTimeout = setTimeout(()=>{
+
+            axios.get(`/getSearchedPlace/?search=${searchPlace}`)
+            .then(response => {
+                const {data} = response;
+                setPlaces(data);
+            })
+            .catch(error => {
+                if (error.response)
+                {
+                    const errorMessage = error.response.data.error;
+                    
+                    toast.error(errorMessage, {
+                        position: "top-right"
+                    });
+                }
+                else
+                {
+                    toast.error("Searching failed due to some error. Please try again!");
+                }
+            })
+
+        },1000)
+
+        return () => {
+            clearInterval(debounceTimeout);
+        }
+
+    }, [searchPlace]);
+
+
 
     useEffect(()=> {
         axios.get("/getAllPlaces")
         .then(response => {
             const {data} = response
-            // console.log(data);
             setPlaces(data);
         });
     },[])
+
 
 
     if(places.length === 0)
@@ -21,6 +59,8 @@ const Index = () => {
         return <Loading/>
     }
 
+
+    
     return(
         <div className="mt-8 gap-x-6 gap-y-8 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
             {places.length > 0 && places.map(place => (
