@@ -185,7 +185,12 @@ const eidtPlace = async(req, res) => {
 const getAllPlaces = async(req, res) => {
     try
     {
-        const places = await PlaceModel.find();
+        const page = parseInt(req.query.page);
+        const limit =  8;
+
+        const skip = (page - 1) * limit;
+
+        const places = await PlaceModel.find().skip(skip).limit(limit);
         res.status(200).json(places);
     }
     catch(error)
@@ -205,11 +210,7 @@ const getSearchedPlace = async(req, res) => {
     {
         const {search} = req.query;
 
-        // Escape special regex characters in the search term
-        const escapedSearch = search.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&');
-        
-        // Create a regular expression with the 'i' modifier for case-insensitive search
-        const regex = new RegExp(`\\b${escapedSearch}\\b`, 'i');
+        const regex = new RegExp(search, 'i');
 
         const foundPlace = await PlaceModel.find({address: { $regex: regex } });
 
