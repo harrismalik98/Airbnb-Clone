@@ -22,9 +22,9 @@ const Index = () => {
         {
             if(!loadPlacesCalled.current)
             {
-                loadInitialPlaces()
+                loadPlaces();
                 setHasMore(true);
-                loadInitialPlaces.current = true;
+                loadPlacesCalled.current = true;
             }
         }
         else
@@ -61,25 +61,7 @@ const Index = () => {
                 clearInterval(debounceTimeout);
             }
         }
-        // eslint-disable-next-line
     }, [searchPlace]);
-
-
-
-    const loadInitialPlaces = async (i) => {
-        try {
-            const { data } = await axios.get(`/getAllPlaces/?page=1`);
-            if (data.length === 0) {
-                setHasMore(false);
-                return;
-            }
-
-            setPlaces(data);
-            setPage(page+1);
-        } catch (err) {
-            console.error(err);
-        }
-    };
 
 
 
@@ -97,10 +79,25 @@ const Index = () => {
             if(data.length === 0)
             {
                 setHasMore(false);
-                setPage(page-1);
+                setPage(page-1); // If data is empty then page represents current page number
                 return;
             }
-            setPlaces((prevState) => [...prevState, ...data]);
+
+            if(data.length < 8)
+            {
+                setHasMore(false);
+                setPlaces((prevState) => [...prevState, ...data]);
+                return;
+            }
+
+            if(page === 1)
+            {
+                setPlaces(data);
+            }
+            else
+            {
+                setPlaces((prevState) => [...prevState, ...data]);
+            }
             setPage(page+1);
         }
         catch(err)

@@ -36,8 +36,6 @@ const AddPlacesForm = () => {
             ...prevState,
             [stateName]: stateValue
         }));
-
-        // console.log(stateName, stateValue);
     }
 
 

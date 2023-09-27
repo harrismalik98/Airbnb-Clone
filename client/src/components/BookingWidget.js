@@ -42,7 +42,6 @@ const BookingWidget = ({place}) => {
             }
     
             const {data} = await axios.post("/addbooking", booking);
-            // console.log(data);
     
             setCheckIn("");
             setCheckOut("");

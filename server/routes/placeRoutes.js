@@ -27,7 +27,7 @@ router.put("/editplace", controller.eidtPlace);
 //========================= Get All Places ===================//
 router.get("/getAllPlaces", controller.getAllPlaces);
 
-//========================= Get All Places ===================//
+//========================= Get All Searched Places ===================//
 router.get("/getSearchedPlace", controller.getSearchedPlace);
 
 module.exports = router;

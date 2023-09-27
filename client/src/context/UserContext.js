@@ -11,7 +11,6 @@ const UserContextProvider = (props) => {
         {
             axios.get("/profile")
             .then((response) => {
-                // console.log(response);
                 const data = response.data;
                 setUser(data);
             });

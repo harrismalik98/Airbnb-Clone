@@ -14,7 +14,7 @@ const register = async(req, res) => {
     try{
         const {name, email, password} = req.body;
 
-        const emailFound = await User.find({email:email});
+        const emailFound = await User.findOne({email:email});
 
         if(emailFound)
         {
