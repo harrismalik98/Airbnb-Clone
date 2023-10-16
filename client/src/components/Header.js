@@ -38,9 +38,9 @@ const Header = () => {
                 searchBar ? <input className="h-6 focus:outline-none" autoFocus type='text' placeholder='Search by address...' value={searching} onChange={ev => setSearching(ev.target.value)}/> :
                 <>
                 <div>Anywhere</div>
-                <div className='border border-l border-gray-300'></div>
+                <div className='border-l-2 h-6 border-gray-300'></div>
                 <div>Any week</div>
-                <div className='border border-l border-gray-300'></div>
+                <div className='border-l-2 h-6 border-gray-300'></div>
                 <div>Add guests</div>
                 </>
             }
