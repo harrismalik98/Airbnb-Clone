@@ -2,6 +2,7 @@
 
 This is a clone of the Airbnb web application built using MERN stack. It is a full-stack web application that allows users to book accommodations in various locations. This application supports user registration, login and authentication.
 
+![app](https://github.com/harrismalik98/Airbnb-Clone/assets/113388505/e91c2400-e895-462e-b742-489e848cc9a6)
 
 ## Installation
 
