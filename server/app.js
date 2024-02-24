@@ -15,9 +15,10 @@ app.use(cookieParser());
 app.use("/uploads", express.static(__dirname+"/uploads")); // For getting images that are downloaded by link
 
 app.use(cors({
-    credentials:true,
-    origin:'http://localhost:3000'
+    credentials: true,
+    origin: [ process.env.CLIENT_BASE_URL ],
 }));
+
 
 
 const userAuthRoutes = require("./routes/userAuthRoutes");
@@ -27,6 +28,11 @@ const bookingRoutes = require("./routes/bookingRoutes");
 app.use("/", userAuthRoutes);
 app.use("/", placeRoutes);
 app.use("/",bookingRoutes);
+
+
+app.get('/', (req, res) => {
+    res.send('Hey this is my API running 🥳')
+})
 
 
 

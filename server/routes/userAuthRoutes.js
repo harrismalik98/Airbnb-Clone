@@ -10,7 +10,7 @@ router.post("/register", controller.register);
 router.post("/login", controller.login);
 
 //========================= User Profile ===================//
-router.post("/logout", controller.logout);
+router.get("/logout", controller.logout);
 
 //========================= User Profile ===================//
 router.get("/profile", controller.profile);

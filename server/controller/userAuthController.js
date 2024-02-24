@@ -36,7 +36,7 @@ const register = async(req, res) => {
 
     }
     catch(error){
-        console.log(err);
+        console.log(error);
         return res.status(500).json({ error: "Internal Server Error" });
     }
 }
@@ -59,7 +59,7 @@ const login = async(req, res) => {
             if(passOk)
             {
                 const token = jwt.sign({id:userDoc._id, email:userDoc.email, name:userDoc.name}, jwtSecret);
-                return res.cookie("token", token).json(userDoc);
+                return res.status(200).cookie("token", token, { maxAge:2592000000, httpOnly:true, secure:true, sameSite:'None' }).json(userDoc);
 
                 // jwt.sign({email:userDoc.email, id:userDoc._id}, jwtSecret, {}, (err,token) => {
                 //     if(err)
@@ -79,8 +79,8 @@ const login = async(req, res) => {
             return res.status(400).json({error:"Invalid email address. Please enter a valid email address."});
         }
     }
-    catch(err){
-        console.log(err);
+    catch(error){
+        console.log(error);
         return res.status(500).json({ error: "Internal Server Error" });
     }
 }
@@ -89,17 +89,17 @@ const login = async(req, res) => {
 
 
 
-// ============================ LOGIN USER METHOD ============================ //
+// ============================ LOGOUT METHOD ============================ //
 const logout = async(req, res) => {
     try
     {
-        res.cookie("token", "").json("true");
+        return res.status(200).clearCookie("token").json({message:"Logout Successful"});
     }
     catch(error)
     {
         console.log(error);
+        return res.status(500).json({error: "Internal Server Error"});
     }
-    
 }
 
 
@@ -126,8 +126,8 @@ const profile = async(req, res) => {
     catch(error)
     {
         console.log(error);
+        return res.status(500).json({error: "Internal Server Error"});
     }
-
 }
 
 
