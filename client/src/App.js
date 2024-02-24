@@ -15,8 +15,8 @@ import SingleBooking from './pages/SingleBooking';
 import { Toaster } from 'react-hot-toast';
 import SearchContextProvider from './context/SearchContext';
 
-// axios.defaults.baseURL = "http://127.0.0.1:5000";
-axios.defaults.baseURL = "http://localhost:5000";
+
+axios.defaults.baseURL = process.env.REACT_APP_API_BASE_URL;
 axios.defaults.withCredentials = true;
 
 function App() {

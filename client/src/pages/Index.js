@@ -132,7 +132,7 @@ const Index = () => {
                     <Link to={`/place/${place._id}`} key={index}>
                         <div className="flex bg-gray-500 rounded-2xl mb-2">
                             {place.photos[0] && (
-                                <img className="rounded-2xl object-cover aspect-square" src={`http://localhost:5000/uploads/${place.photos[0]}`} alt={place.title}/>
+                                <img className="rounded-2xl object-cover aspect-square" src={`${process.env.REACT_APP_API_BASE_URL}/uploads/${place.photos[0]}`} alt={place.title}/>
                             )}
                         </div>
                         <h2 className="font-bold">{place.address}</h2>

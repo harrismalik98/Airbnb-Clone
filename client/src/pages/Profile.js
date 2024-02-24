@@ -10,7 +10,7 @@ const Profile = () => {
     const {user,setUser} = useContext(UserContext);
 
     const logoutHandler = async() => {
-        await axios.post("/logout");
+        await axios.get("/logout");
 
         setRedirect("/");
         setUser(null);
