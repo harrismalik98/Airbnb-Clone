@@ -2,6 +2,7 @@
 
 This is a clone of the Airbnb web application built using MERN stack. It is a full-stack web application that allows users to book accommodations in various locations. This application supports user registration, login and authentication.
 
+![app](https://github.com/harrismalik98/Airbnb-Clone/assets/113388505/e91c2400-e895-462e-b742-489e848cc9a6)
 
 ## Installation
 
@@ -14,15 +15,24 @@ To install and run the application, please follow these steps:
 - Inside the `server` folder, run `npm install` to install server-side dependencies.
 - Start the server-side using `nodemon app.js`.
 - You can choose to work with either MongoDB Atlas or your locally installed MongoDB.
-- Create a .env file in the project server folder and add your required variables.
+- Create a .env file in the `client` and `server` folder of your project and add the following variables:
 
 
-## env variables
+## Client env variables
+
+##### REACT_APP_API_BASE_URL=
+
+- `REACT_APP_API_BASE_URL`: Base URL of your backend server.
+
+## Server env variables
 
 ##### MONGODB_URL=
-
 ##### JWT_SECRET=
+##### CLIENT_BASE_URL=
 
+- `MONGODB_URL`: The URL of your MongoDB database.
+- `JWT_SECRET`: Secret key for JWT token generation.
+- `CLIENT_BASE_URL`: Base URL of your frontend server.
 
 ## Features
 
