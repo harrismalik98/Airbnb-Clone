@@ -48,7 +48,7 @@ const Bookings = () => {
                     : (
                         <div>
                             {bookings.length > 0 && bookings.map(booking => (
-                                <Link to={`/account/bookings/${booking._id}`} className="flex gap-4 bg-gray-200 rounded-2xl overflow-hidden" key={booking._id}>
+                                <Link to={`/account/bookings/${booking._id}`} className="flex gap-4 bg-gray-200 rounded-2xl mb-4 overflow-hidden" key={booking._id}>
                                     <div className="w-60">
                                         <PlaceImg place={booking.place}/>
                                     </div>

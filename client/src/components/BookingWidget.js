@@ -3,6 +3,7 @@ import differenceInCalendarDays from 'date-fns/differenceInCalendarDays'
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
+import toast from "react-hot-toast";
 
 const BookingWidget = ({place}) => {
 
@@ -35,21 +36,28 @@ const BookingWidget = ({place}) => {
     const bookingHandler = async() => {
         if(user)
         {
-            const booking = {
-                place: place._id,
-                checkIn, checkOut, numberOfGuests, name, phone,
-                price: numberOfNights * place.price
+            if(!checkIn || !checkOut || !numberOfGuests || !phone)
+            {
+                toast.error("Please enter all details");
             }
-    
-            const {data} = await axios.post("/addbooking", booking);
-    
-            setCheckIn("");
-            setCheckOut("");
-            setNumberOfGuests("");
-            setName("");
-            setPhone("");
-    
-            navigate(`/account/bookings/${data._id}`);
+            else
+            {
+                const booking = {
+                    place: place._id,
+                    checkIn, checkOut, numberOfGuests, name, phone,
+                    price: numberOfNights * place.price
+                }
+        
+                const {data} = await axios.post("/addbooking", booking);
+        
+                setCheckIn("");
+                setCheckOut("");
+                setNumberOfGuests("");
+                setName("");
+                setPhone("");
+        
+                navigate(`/account/bookings/${data._id}`);
+            }
         }
         else
         {
@@ -68,25 +76,25 @@ const BookingWidget = ({place}) => {
                 <div className="flex justify-center">
                     <div className="py-3 px-4">
                         <label>Check In:</label>
-                        <input type="date" value={checkIn} onChange={(ev) => setCheckIn(ev.target.value)} />
+                        <input type="date" required value={checkIn} onChange={(ev) => setCheckIn(ev.target.value)} />
                     </div>
 
                     <div className="py-3 px-4 border-l">
                         <label>Check Out:</label>
-                        <input type="date" value={checkOut} onChange={(ev) => setCheckOut(ev.target.value)} />
+                        <input type="date" required value={checkOut} onChange={(ev) => setCheckOut(ev.target.value)} />
                     </div>
                 </div>
                 <div className="py-3 px-4 border-t">
                     <label>Number of guests:</label>
-                    <input type="number" value={numberOfGuests} onChange={(ev) => setNumberOfGuests(ev.target.value)}/>
+                    <input type="number" required value={numberOfGuests} onChange={(ev) => setNumberOfGuests(ev.target.value)}/>
                 </div>
 
                 {numberOfNights > 0 && (
                     <div className="py-3 px-4 border-t">
                         <label>Name:</label>
-                        <input type="text" value={name} onChange={(ev) => setName(ev.target.value)}/>
+                        <input type="text" required value={name} onChange={(ev) => setName(ev.target.value)}/>
                         <label>Phone number:</label>
-                        <input type="tel" value={phone} onChange={(ev) => setPhone(ev.target.value)}/>
+                        <input type="tel" required value={phone} onChange={(ev) => setPhone(ev.target.value)}/>
                     </div>
                 )}
 
