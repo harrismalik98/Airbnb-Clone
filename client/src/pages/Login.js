@@ -37,16 +37,22 @@ const Login = () => {
 
         try
         {
-            const response = await axios.post("/login", formData);
-            setUser(response.data);
+            const {data} = await axios.post("/login", formData);
+            
+            const token = data.token;
+            localStorage.setItem("airbnb-token", token);
 
+            axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+            
+            setUser(data.userDoc);
+            
             // FOR CLEARING THE FORM
             for(const key in formRefs)
             {
                 formRefs[key].current.value = "";
             }
 
-            toast.success("Login Successfull");
+            toast.success(data.message);
             navigate("/");
         }
         catch(error)

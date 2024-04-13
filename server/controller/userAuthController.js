@@ -33,7 +33,6 @@ const register = async(req, res) => {
             // console.log(newUser);
             res.status(201).json(newUser);
         }
-
     }
     catch(error){
         console.log(error);
@@ -47,7 +46,6 @@ const register = async(req, res) => {
 
 // ============================ LOGIN USER METHOD ============================ //
 const login = async(req, res) => {
-
     try{
         const {email, password} = req.body
 
@@ -59,7 +57,9 @@ const login = async(req, res) => {
             if(passOk)
             {
                 const token = jwt.sign({id:userDoc._id, email:userDoc.email, name:userDoc.name}, jwtSecret);
-                return res.status(200).cookie("token", token, { maxAge:2592000000, httpOnly:true, secure:true, sameSite:'None' }).json(userDoc);
+                return res.status(200).json({message:"Login Successfull", userDoc, token});
+
+                // return res.cookie("token", token, { maxAge:2592000000, httpOnly:true, secure:true, sameSite:'None' }).json(userDoc);
 
                 // jwt.sign({email:userDoc.email, id:userDoc._id}, jwtSecret, {}, (err,token) => {
                 //     if(err)
@@ -93,7 +93,9 @@ const login = async(req, res) => {
 const logout = async(req, res) => {
     try
     {
-        return res.status(200).clearCookie("token").json({message:"Logout Successful"});
+        return res.status(200).json({message:"Logout Successful"});
+        
+        // return res.status(200).clearCookie("token").json({message:"Logout Successful"});
     }
     catch(error)
     {
@@ -108,19 +110,19 @@ const logout = async(req, res) => {
 
 // ============================ PROFILE METHOD ============================ //
 const profile = async(req, res) => {
-
     try
     {
-        const {token} = req.cookies;
+        const authHeader = req.headers.authorization;
+        const token = authHeader && authHeader.split(" ")[1]; //0=Bearer 1=TOKEN
 
         if(token)
         {
             const userData = jwt.verify(token, jwtSecret);
-            return res.json(userData);
+            return res.status(200).json({userData});
         }
         else
         {
-            return res.json(null);
+            return res.status(404).json(null);
         }
     }
     catch(error)

@@ -79,7 +79,7 @@ const addNewPlace = async(req, res) => {
     try
     {
         const {title, address, addedPhotos, description, perks, extraInfo, checkIn, checkOut, maxGuests, price} = req.body;
-        const {token} = req.cookies;
+        const token = req.headers.authorization?.split(' ')[1];
         const userData = jwt.verify(token, jwtSecret);
 
         // console.log(userData);
@@ -109,7 +109,7 @@ const addNewPlace = async(req, res) => {
 const getUserPlaces = async(req, res) => {
     try
     {
-        const {token} = req.cookies;
+        const token = req.headers.authorization?.split(' ')[1];
         const {id} = jwt.verify(token, jwtSecret);
         
         const data = await PlaceModel.find({owner: id});
@@ -151,7 +151,7 @@ const eidtPlace = async(req, res) => {
     try
     {
         const {id, title, address, addedPhotos, description, perks, extraInfo, checkIn, checkOut, maxGuests, price} = req.body;
-        const {token} = req.cookies;
+        const token = req.headers.authorization?.split(' ')[1];
         const userData = jwt.verify(token, jwtSecret);
         // console.log(userData);
 

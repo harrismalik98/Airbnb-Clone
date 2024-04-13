@@ -12,7 +12,7 @@ const {BookingModel} = require("../models/bookingModel");
 const addBooking = async(req, res) => {
     try
     {
-        const {token} = req.cookies;
+        const token = req.headers.authorization?.split(' ')[1];
         const userData = jwt.verify(token,jwtSecret);
 
         const {place, checkIn, checkOut, numberOfGuests, name, phone, price} = req.body;
@@ -41,7 +41,7 @@ const addBooking = async(req, res) => {
 const getBookings = async(req, res) => {
     try
     {
-        const {token} = req.cookies;
+        const token = req.headers.authorization?.split(' ')[1];
         const userData = jwt.verify(token,jwtSecret);
 
         const bookings = await BookingModel.find({user: userData.id}).populate("place");

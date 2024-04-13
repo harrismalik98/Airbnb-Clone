@@ -9,11 +9,22 @@ const UserContextProvider = (props) => {
     useEffect(() => {
         if(!user)
         {
-            axios.get("/profile")
-            .then((response) => {
-                const data = response.data;
-                setUser(data);
-            });
+            const token = localStorage.getItem("airbnb-token");
+
+            if(token)
+            {
+                axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+
+                axios.get("/profile")
+                .then((response) => {
+                    const data = response.data;
+                    setUser(data.userData);
+                });
+            }
+            else
+            {
+                axios.defaults.headers.common['Authorization'] = null;
+            }
         }
     }, [user]);
 
