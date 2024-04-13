@@ -3,6 +3,7 @@ import { UserContext } from "../context/UserContext";
 import { Navigate } from "react-router-dom";
 import axios from "axios";
 import AccountNav from "../components/AccountNav";
+import toast from "react-hot-toast";
 
 const Profile = () => {
 
@@ -10,10 +11,13 @@ const Profile = () => {
     const {user,setUser} = useContext(UserContext);
 
     const logoutHandler = async() => {
-        await axios.get("/logout");
+        const {data} = await axios.get("/logout");
+
+        localStorage.removeItem("airbnb-token");
+        setUser(null);
+        toast.success(data.message);
 
         setRedirect("/");
-        setUser(null);
     }
 
     if(!user)
